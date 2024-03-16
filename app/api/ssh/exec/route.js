@@ -3,7 +3,7 @@ import { request } from 'http';
 import { NextRequest, NextResponse } from "next/server";
 
 import { sshConnections, waitStream, fulfillWithTimeLimit } from "@/app/lib/utils"
-export const maxDuration = 75; // This function can run longer than default timeout
+export const maxDuration = 10; // This function can run longer than default timeout, but hobby ios limited to 10 seconds
 
 /*
 curl -X POST http://localhost:3000/api/ssh/exec -H 'openai-ephemeral-user-id: abc' \
