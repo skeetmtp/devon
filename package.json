@@ -1,0 +1,39 @@
+{
+  "name": "nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev.orig": "next dev",
+    "dev": "NODE_ENV=development node main.js",
+    "build": "next build",
+    "start.orig": "next start",
+    "start": "NODE_ENV=production node main.js",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.1.2",
+    "@vercel/kv": "^1.0.0",
+    "@vercel/speed-insights": "^1.0.0",
+    "express": "^4.18.2",
+    "luxon": "^3.4.4",
+    "next": "14.0.3",
+    "nunjucks": "^3.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "ssh2-promise": "^1.0.3"
+  },
+  "resolutions": {
+    "chokidar": "2.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,17 @@
+# see https://github.com/vercel/next.js/blob/canary/examples/with-docker-multi-env/docker/development/docker-compose.yml
+
+version: "3.8"
+
+services:
+  development:
+    build:
+      context: ../../
+      dockerfile: docker/development/Dockerfile
+    image: development
+    ports:
+      - 3000:3000
+    networks:
+      - my_network
+
+networks:
+  my_network:

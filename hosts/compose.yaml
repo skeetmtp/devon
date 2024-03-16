@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # target:
+  #   container_name: target_container
+  #   build:
+  #     context: ./vuln
+  #     dockerfile: ./CVE-2021-41773.dockerfile
+  #   platform: linux/amd64
+  #   ports:
+  #     - 8080:80
+  #   networks:
+  #     vpcbr:
+  #       ipv4_address: 10.5.0.5
+
+  # my_first_pwnie:
+  #   container_name: my_first_pwnie_container
+  #   build:
+  #     context: https://github.com/osirislab/CSAW-CTF-2023-Quals.git#main:pwn/my_first_pwnie
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - 31137:31137
+  #   networks:
+  #     vpcbr:
+  #       ipv4_address: 10.5.0.5
+
+  blocky_noncense:
+    container_name: blocky_noncense
+    build:
+      context: "https://github.com/osirislab/CSAW-CTF-2023-Quals.git#main:crypto/blocky noncense"
+      dockerfile: ./Dockerfile
+    ports:
+      - 5002:5002
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+
+
+  host:
+    build:
+      context: ..
+      dockerfile: ./hosts/kali.dockerfile
+    container_name: host_container
+    image: gpt-ssh:latest
+    links:
+      - blocky_noncense
+    ports:
+      - "2222:22"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+
+# docker compose up --build -d
+# docker exec -it host_container /bin/bash
+# docker compose down

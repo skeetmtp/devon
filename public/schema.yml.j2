@@ -1,0 +1,118 @@
+openapi: "3.0.0"
+info:
+  title: "Remote Command Execution API"
+  version: "1.0.0"
+  description: "API for executing commands on a remote server and retrieving their output."
+servers:
+  - url: "{{ url }}"
+paths:
+  /api/ssh/status:
+    post:
+      summary: "Connect to remote server"
+      operationId: "connect"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                host:
+                  type: string
+                  description: The host to connect to.
+                username:
+                  type: string
+                  description: The username to use for the connection.
+                port:
+                  type: integer
+                  description: The port to connect to.
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input, object invalid
+    get:
+      summary: "Check server status, and if any current operation is running"
+      operationId: "status"
+      parameters:
+        - in: query
+          name: sleep
+          schema:
+            type: integer
+          required: false
+          description: Sleep time in milliseconds.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ready:
+                    type: boolean
+                  lastOperation:
+                    type: string
+                  currentOperation:
+                    type: string
+        '404':
+          description: Not connected, you must first POST config to /api/ssh/status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/ssh/exec:
+    get:
+      summary: Execute an SSH command
+      operationId: "executeCommand"
+      parameters:
+        - in: query
+          name: stdin
+          schema:
+            type: string
+          required: true
+          description: Standard input for the SSH command.
+      responses:
+        '200':
+          description: Command executed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stdout:
+                    type: "string"
+                    description: "The standard output of the executed command"
+                  stderr:
+                    type: "string"
+                    description: "The standard error output of the executed command"
+                  error:
+                    type: "string"
+                    description: "Error message in case of error"
+  /api/ssh/file:
+    post:
+      summary: "Upload a file to the server"
+      operationId: "uploadFile"
+      parameters:
+        - in: query
+          name: path
+          schema:
+            type: string
+          required: true
+          description: "The remote file path"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: "file content"
+      responses:
+        '200':
+          description: File uploaded successfully
